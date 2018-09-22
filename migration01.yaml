@@ -1,0 +1,15 @@
+--- !<tag:framesquared.com,2015:migration>
+create table:
+  name: shipto
+  temporary: true
+  not exists: true
+  unlogged: true
+  like: billto
+  blap:
+  columns:
+  - name: first_name
+    type: string
+    precision: 255
+  - name: last_name
+    type: string
+    precision: 64
