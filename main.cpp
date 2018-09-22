@@ -86,7 +86,7 @@ int main() {
     Environment env = Environment("../");
     Template temp = env.parse_template("../template01.inja");
 
-    result = env.render_file("template01.inja", data);
+    result = env.render_file("template01.inja", data["create table"]);
     std::cout << result << std::endl;
 
     return 0;

@@ -1,3 +1,8 @@
-CREATE TABLE {{ create table/name }} {% if not create table/like == "" %}LIKE {{ create table/like }} {% endif %} (
-{{ 
+CREATE TABLE {{ name }} {% if not like == "" %}LIKE {{ like }} {% endif %} (
+Column List:
+
+## for column in columns
+    {{ loop/index1 }}: {{ column/name }} {{ column/type }}{% if not column/precision == "" %}({{column/precision}}){% endif %}
+
+## endfor
 );
