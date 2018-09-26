@@ -5,7 +5,6 @@ create table:
   not exists: true
   unlogged: true
   like: billto
-  blap:
   columns:
   - name: first_name
     type: string

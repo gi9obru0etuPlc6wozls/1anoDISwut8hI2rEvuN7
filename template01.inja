@@ -1,8 +1,18 @@
-CREATE TABLE {{ name }} {% if not like == "" %}LIKE {{ like }} {% endif %} (
-Column List:
+CREATE TABLE {{ create table/name }}
+## if existsIn(create table,"like")
+ LIKE {{ create table/like }}
+## endif
+ (
+## for column in create table/columns
 
-## for column in columns
-    {{ loop/index1 }}: {{ column/name }} {{ column/type }}{% if not column/precision == "" %}({{column/precision}}){% endif %}
-
+    {{ column/name }} {{ map("type", column/type) }}
+## if not column/precision == ""
+({{column/precision}})
+## endif
+## if not loop/is_last
+,
+## endif
 ## endfor
+
 );
+

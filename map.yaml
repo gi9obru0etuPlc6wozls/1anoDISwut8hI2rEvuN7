@@ -1,0 +1,6 @@
+--- !<tag:framesquared.com,2015:map>
+type:
+  string: varchar
+  numeric: double
+  date: timestamp
+  boolean: int

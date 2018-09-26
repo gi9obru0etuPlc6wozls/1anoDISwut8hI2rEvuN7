@@ -6,41 +6,6 @@
 using json = nlohmann::json;
 using namespace inja;
 
-static int level = 0;
-
-void debugYAML(YAML::Node node) {
-    level++;
-    std::cout << std::string(level, '-') << "debugYAML..." << std::endl;
-
-    switch (node.Type()) {
-        case YAML::NodeType::Null: // ...
-            std::cout << std::string(level, '-') << "Null" << std::endl;
-            break;
-        case YAML::NodeType::Scalar: // ...
-            std::cout << std::string(level, '-') << "Scalar Value: " << node.as<std::string>() << ":" << std::endl;
-            break;
-        case YAML::NodeType::Sequence: // ...
-            std::cout << std::string(level, '-') << "Sequence Start" << std::endl;
-            for (YAML::iterator n_it = node.begin(); n_it != node.end(); ++n_it) {
-                debugYAML(*n_it);
-            }
-            std::cout << std::string(level, '-') << "Sequence End" << std::endl;
-            break;
-        case YAML::NodeType::Map: // ...
-            std::cout << std::string(level, '-') << "Map Start" << std::endl;
-            for (YAML::iterator n_it = node.begin(); n_it != node.end(); ++n_it) {
-                std::cout << "First: " << n_it->first.as<std::string>() << std::endl;
-                debugYAML(n_it->second);
-            }
-            std::cout << std::string(level, '-') << "Map End" << std::endl;
-            break;
-        case YAML::NodeType::Undefined: // ...
-            std::cout << std::string(level, '-') << "Undefined" << std::endl;
-            break;
-    }
-    level--;
-}
-
 nlohmann::json YAMLtoJSON(const YAML::Node &node) {
     int i = 0;
     nlohmann::json data;
@@ -66,27 +31,40 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
         case YAML::NodeType::Undefined: // ...
             break;
     }
-    level--;
+
     return data;
 }
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
-    std::string result;
 
-    YAML::Node schemaNodes = YAML::LoadFile("../migration01.yaml");
-    assert(schemaNodes.IsDefined()); // TODO: add proper error handling
-    assert(schemaNodes.IsMap()); // TODO: add proper error handling
+    YAML::Node yamlSchema = YAML::LoadFile("../migration01.yaml");
+    assert(yamlSchema.IsDefined()); // TODO: add proper error handling
+    assert(yamlSchema.IsMap()); // TODO: add proper error handling
+    nlohmann::json schema = YAMLtoJSON(yamlSchema);
 
-    nlohmann::json data;
-    data = YAMLtoJSON(schemaNodes);
+    YAML::Node yamlMap = YAML::LoadFile("../map.yaml");
+    assert(yamlMap.IsDefined()); // TODO: add proper error handling
+    assert(yamlMap.IsMap()); // TODO: add proper error handling
+    schema["map"] = YAMLtoJSON(yamlMap);
 
-    std::cout << data.dump(4) << std::endl;
+    std::cout << "schema:" << schema.dump(4) << std::endl;
 
     Environment env = Environment("../");
-    Template temp = env.parse_template("../template01.inja");
 
-    result = env.render_file("template01.inja", data["create table"]);
+    env.add_callback("map", 2, [&env](Parsed::Arguments args, json x) {
+        std::string map = env.get_argument<std::string>(args, 0, x);
+        std::string key = env.get_argument<std::string>(args, 1, x);
+
+        std::string s = "Key not found.";
+        try {
+            s = x.at("map").at(map).at(key).get<std::string>();
+        }
+        catch (...) { ; // do nothing
+        }
+        return s;
+    });
+
+    std::string result = env.render_file("template01.inja", schema);
     std::cout << result << std::endl;
 
     return 0;
