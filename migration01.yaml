@@ -8,7 +8,7 @@ create table:
   columns:
   - name: first_name
     type: string
-    precision: 255
+    precision: 255.0
   - name: last_name
     type: string
     precision: 64

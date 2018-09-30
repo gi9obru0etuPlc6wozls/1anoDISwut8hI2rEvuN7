@@ -1,5 +1,7 @@
 #include <iostream>
 #include <yaml-cpp/yaml.h>
+#include <yaml-cpp/exceptions.h>
+#include <yaml-cpp/node/impl.h>
 #include <nlohmann/json.hpp>
 #include <inja.hpp>
 
@@ -15,7 +17,23 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
             data = nullptr;
             break;
         case YAML::NodeType::Scalar: // ...
-            data = node.as<std::string>();
+            try {
+                data = node.as<bool>();
+            }
+            catch (YAML::BadConversion &x) { // YAML::TypedBadConversion<bool>
+                try {
+                    data = node.as<int>();
+                }
+                catch (YAML::BadConversion &x) { // YAML::TypedBadConversion<bool>
+                    try {
+                        data = node.as<double>();
+                    }
+                    catch (YAML::BadConversion &x) { // YAML::TypedBadConversion<bool>
+                        data = node.as<std::string>();
+                    }
+                }
+            }
+        std::cout << "Value: " << data << std::endl;
             break;
         case YAML::NodeType::Sequence: // ...
             for (YAML::const_iterator n_it = node.begin(); n_it != node.end(); ++n_it) {
@@ -55,13 +73,13 @@ int main() {
         std::string map = env.get_argument<std::string>(args, 0, x);
         std::string key = env.get_argument<std::string>(args, 1, x);
 
-        std::string s = "Key not found.";
+        std::string r = "Map key not found.";
         try {
-            s = x.at("map").at(map).at(key).get<std::string>();
+            r = x.at("map").at(map).at(key).get<std::string>();
         }
         catch (...) { ; // do nothing
         }
-        return s;
+        return r;
     });
 
     std::string result = env.render_file("template01.inja", schema);

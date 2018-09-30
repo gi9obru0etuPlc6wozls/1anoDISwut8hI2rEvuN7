@@ -1,4 +1,16 @@
-CREATE TABLE {{ create table/name }}
+{!create table/unlogged!}
+CREATE
+## if existsIn(create table, "unlogged") and create table/unlogged
+ UNLOGGED
+## endif
+## if existsIn(create table, "temp") and create table/temp
+ TEMPORARY
+## else
+## if existsIn(create table, "temporary") and create table/temporary
+ TEMPORARY
+## endif
+## endif
+ TABLE {{ create table/name }}
 ## if existsIn(create table,"like")
  LIKE {{ create table/like }}
 ## endif
