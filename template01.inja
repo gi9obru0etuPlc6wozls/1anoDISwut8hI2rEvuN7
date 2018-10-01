@@ -12,8 +12,8 @@ CREATE
 ## endif
  TABLE {{ create table/name }}
 ## if existsIn(create table,"like")
- LIKE {{ create table/like }}
-## endif
+ LIKE {{ create table/like }};
+## else
  (
 ## for column in create table/columns
 
@@ -27,4 +27,6 @@ CREATE
 ## endfor
 
 );
+
+## endif
 

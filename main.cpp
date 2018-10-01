@@ -8,6 +8,31 @@
 using json = nlohmann::json;
 using namespace inja;
 
+
+std::string snakeToCamel(const std::string &snake, const bool initCap = false) {
+    std::string r;
+
+    bool underscore = false;
+    for (int i = 0; i < snake.length(); ++i) {
+
+        char c = snake[i];
+
+        if (i == 0 && initCap)
+            c = toupper(c);
+
+        if (underscore)
+            c = toupper(c);
+
+        underscore = false;
+
+        if (c == '_')
+            underscore = true;
+        else
+            r += c;
+    }
+    return r;
+}
+
 nlohmann::json YAMLtoJSON(const YAML::Node &node) {
     int i = 0;
     nlohmann::json data;
@@ -33,7 +58,6 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
                     }
                 }
             }
-        std::cout << "Value: " << data << std::endl;
             break;
         case YAML::NodeType::Sequence: // ...
             for (YAML::const_iterator n_it = node.begin(); n_it != node.end(); ++n_it) {
@@ -54,6 +78,11 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
 }
 
 int main() {
+
+    std::string s = "this_is_snake_case_";
+    std::cout << "snakeToCamel:" << snakeToCamel(s) << std::endl;
+    std::cout << "SnakeToCamel:" << snakeToCamel(s, true) << std::endl;
+
 
     YAML::Node yamlSchema = YAML::LoadFile("../migration01.yaml");
     assert(yamlSchema.IsDefined()); // TODO: add proper error handling
