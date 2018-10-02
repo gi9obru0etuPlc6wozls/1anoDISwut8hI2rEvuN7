@@ -17,7 +17,7 @@ CREATE
  (
 ## for column in create table/columns
 
-    {{ column/name }} {{ map("type", column/type) }}
+    {{ lCamel(column/name) }} {{ map("type", column/type) }}
 ## if not column/precision == ""
 ({{column/precision}})
 ## endif

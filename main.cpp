@@ -45,15 +45,15 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
             try {
                 data = node.as<bool>();
             }
-            catch (YAML::BadConversion &x) { // YAML::TypedBadConversion<bool>
+            catch (YAML::BadConversion &x) {
                 try {
                     data = node.as<int>();
                 }
-                catch (YAML::BadConversion &x) { // YAML::TypedBadConversion<bool>
+                catch (YAML::BadConversion &x) {
                     try {
                         data = node.as<double>();
                     }
-                    catch (YAML::BadConversion &x) { // YAML::TypedBadConversion<bool>
+                    catch (YAML::BadConversion &x) {
                         data = node.as<std::string>();
                     }
                 }
@@ -109,6 +109,10 @@ int main() {
         catch (...) { ; // do nothing
         }
         return r;
+    });
+
+    env.add_callback("lCamel", 1, [&env](Parsed::Arguments args, json x) {
+        return snakeToCamel(env.get_argument<std::string>(args, 0, x));
     });
 
     std::string result = env.render_file("template01.inja", schema);

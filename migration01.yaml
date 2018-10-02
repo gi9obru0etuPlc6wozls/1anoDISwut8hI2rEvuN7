@@ -1,10 +1,10 @@
 --- !<tag:framesquared.com,2015:migration>
 create table:
-  name: shipto
+  name: ship_to
   temporary: true
   not exists: true
   unlogged: true
-  like: billto
+  xlike: billto
   columns:
   - name: first_name
     type: string
@@ -12,3 +12,6 @@ create table:
   - name: last_name
     type: string
     precision: 64
+  - name: [e1,e2,e3]
+    type: string
+    precision: 128
