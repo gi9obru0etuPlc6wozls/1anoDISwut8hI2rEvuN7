@@ -1,6 +1,6 @@
 --- !<tag:framesquared.com,2015:map>
 type:
-  string: varchar
+  string: character varying
   numeric: double
-  date: timestamp
+  timestamp: timestamp without time zone
   boolean: int

@@ -102,7 +102,7 @@ int main() {
         std::string map = env.get_argument<std::string>(args, 0, x);
         std::string key = env.get_argument<std::string>(args, 1, x);
 
-        std::string r = "Map key not found.";
+        std::string r = key;
         try {
             r = x.at("map").at(map).at(key).get<std::string>();
         }

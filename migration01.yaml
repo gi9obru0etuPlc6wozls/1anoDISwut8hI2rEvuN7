@@ -6,12 +6,17 @@ create table:
   unlogged: true
   xlike: billto
   columns:
+  - name: id
+    type: uuid
+    auto: true
   - name: first_name
     type: string
-    precision: 255.0
+    precision: 255
+    not null: true
   - name: last_name
     type: string
-    precision: 64
-  - name: [e1,e2,e3]
+    precision:
+  - name: address
     type: string
-    precision: 128
+    precision: 12
+    not_null: true

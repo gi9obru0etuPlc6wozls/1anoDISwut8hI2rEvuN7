@@ -1,14 +1,9 @@
-{!create table/unlogged!}
 CREATE
 ## if existsIn(create table, "unlogged") and create table/unlogged
  UNLOGGED
 ## endif
-## if existsIn(create table, "temp") and create table/temp
- TEMPORARY
-## else
 ## if existsIn(create table, "temporary") and create table/temporary
  TEMPORARY
-## endif
 ## endif
  TABLE {{ create table/name }}
 ## if existsIn(create table,"like")
@@ -17,13 +12,29 @@ CREATE
  (
 ## for column in create table/columns
 
-    {{ lCamel(column/name) }} {{ map("type", column/type) }}
-## if not column/precision == ""
+## if existsIn(column, "auto") and column/auto
+{# --- Auto Start #}
+
+## if column/type == "uuid"
+    {{ column/name }} UUID DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY
+## else
+    {{ column/name }} SERIAL PRIMARY KEY
+## endif
+{# --- Auto End  #}
+## else
+    {{ column/name }} {{ map("type", column/type) }}
+## if existsIn(column, "precision") and not column/precision == ""
 ({{column/precision}})
+## endif
+## if existsIn(column, "not_null") and column/not_null
+ NOT NULL
+## endif
 ## endif
 ## if not loop/is_last
 ,
+
 ## endif
+
 ## endfor
 
 );
