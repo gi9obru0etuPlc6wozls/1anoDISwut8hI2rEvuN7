@@ -9,7 +9,10 @@ create table:
   - name: id
     type: uuid
     auto: true
-  - name: first_name
+    field:
+      required: true
+      label: Identrifier
+  - name: first_name_id
     type: string
     precision: 255
     not null: true

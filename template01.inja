@@ -10,7 +10,10 @@ CREATE
  LIKE {{ create table/like }};
 ## else
  (
+{# --- Column Start --- #}
 ## for column in create table/columns
+Name: {{ column/name }} {{ regex_match(column/name, "^.*_id$") }}
+Name: {{ column/name }} {{ regex_match(column/name, "_id$") }}
 
 ## if existsIn(column, "auto") and column/auto
 {# --- Auto Start #}
@@ -36,6 +39,7 @@ CREATE
 ## endif
 
 ## endfor
+{# --- Column End --- #}
 
 );
 

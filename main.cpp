@@ -4,6 +4,7 @@
 #include <yaml-cpp/node/impl.h>
 #include <nlohmann/json.hpp>
 #include <inja.hpp>
+#include <regex>
 
 using json = nlohmann::json;
 using namespace inja;
@@ -79,11 +80,6 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
 
 int main() {
 
-    std::string s = "this_is_snake_case_";
-    std::cout << "snakeToCamel:" << snakeToCamel(s) << std::endl;
-    std::cout << "SnakeToCamel:" << snakeToCamel(s, true) << std::endl;
-
-
     YAML::Node yamlSchema = YAML::LoadFile("../migration01.yaml");
     assert(yamlSchema.IsDefined()); // TODO: add proper error handling
     assert(yamlSchema.IsMap()); // TODO: add proper error handling
@@ -113,6 +109,20 @@ int main() {
 
     env.add_callback("lCamel", 1, [&env](Parsed::Arguments args, json x) {
         return snakeToCamel(env.get_argument<std::string>(args, 0, x));
+    });
+
+    env.add_callback("uCamel", 1, [&env](Parsed::Arguments args, json x) {
+        return snakeToCamel(env.get_argument<std::string>(args, 0, x), true);
+    });
+
+    env.add_callback("regex_match", 2, [&env](Parsed::Arguments args, json x) {
+        std::string value = env.get_argument<std::string>(args, 0, x);
+        std::regex re(env.get_argument<std::string>(args, 1, x));
+
+        std::cout << "value:" << value;
+        std::cout << " regex_match:" << std::regex_match(value, re) << std::endl;
+
+        return std::regex_match(value, re);
     });
 
     std::string result = env.render_file("template01.inja", schema);
