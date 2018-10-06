@@ -119,10 +119,7 @@ int main() {
         std::string value = env.get_argument<std::string>(args, 0, x);
         std::regex re(env.get_argument<std::string>(args, 1, x));
 
-        std::cout << "value:" << value;
-        std::cout << " regex_search:" << std::regex_search(value, re) << std::endl;
-
-        return std::regex_match(value, re);
+        return std::regex_search(value, re);
     });
 
     std::string result = env.render_file("template01.inja", schema);
