@@ -115,12 +115,12 @@ int main() {
         return snakeToCamel(env.get_argument<std::string>(args, 0, x), true);
     });
 
-    env.add_callback("regex_match", 2, [&env](Parsed::Arguments args, json x) {
+    env.add_callback("regex_search", 2, [&env](Parsed::Arguments args, json x) {
         std::string value = env.get_argument<std::string>(args, 0, x);
         std::regex re(env.get_argument<std::string>(args, 1, x));
 
         std::cout << "value:" << value;
-        std::cout << " regex_match:" << std::regex_match(value, re) << std::endl;
+        std::cout << " regex_search:" << std::regex_search(value, re) << std::endl;
 
         return std::regex_match(value, re);
     });

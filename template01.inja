@@ -12,8 +12,8 @@ CREATE
  (
 {# --- Column Start --- #}
 ## for column in create table/columns
-Name: {{ column/name }} {{ regex_match(column/name, "^.*_id$") }}
-Name: {{ column/name }} {{ regex_match(column/name, "_id$") }}
+Name: {{ column/name }} {{ regex_search(column/name, "^.*_id$") }}
+Name: {{ column/name }} {{ regex_search(column/name, "_id$") }}
 
 ## if existsIn(column, "auto") and column/auto
 {# --- Auto Start #}
