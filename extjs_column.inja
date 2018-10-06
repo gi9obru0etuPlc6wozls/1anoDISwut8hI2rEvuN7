@@ -1,0 +1,4 @@
+        {
+            name: '{{ lCamel(column/name) }}',
+            type: '{{ map("extjs_type", column/type)  }}',
+        }

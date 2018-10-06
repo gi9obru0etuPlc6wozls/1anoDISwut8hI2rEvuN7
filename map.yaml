@@ -1,6 +1,8 @@
 --- !<tag:framesquared.com,2015:map>
-type:
+db_type:
   string: character varying
   numeric: double
   timestamp: timestamp without time zone
   boolean: int
+extjs_type:
+  uuid: string

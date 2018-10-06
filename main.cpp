@@ -9,7 +9,6 @@
 using json = nlohmann::json;
 using namespace inja;
 
-
 std::string snakeToCamel(const std::string &snake, const bool initCap = false) {
     std::string r;
 
@@ -122,8 +121,18 @@ int main() {
         return std::regex_search(value, re);
     });
 
-    std::string result = env.render_file("template01.inja", schema);
-    std::cout << result << std::endl;
+    env.add_callback("regex_replace", 3, [&env](Parsed::Arguments args, json x) {
+        std::string subject = env.get_argument<std::string>(args, 0, x);
+        std::regex regex(env.get_argument<std::string>(args, 1, x));
+        std::string replacement = env.get_argument<std::string>(args, 2, x);
+
+        return std::regex_replace(subject, regex, replacement);
+    });
+
+    std::string result1 = env.render_file("table_create.inja", schema);
+    std::string result2 = env.render_file("extjs_model_create.inja", schema);
+    std::cout << "SQL:" << result1 << std::endl;
+    std::cout << "ExtJS:" << result2 << std::endl;
 
     return 0;
 }

@@ -1,0 +1,25 @@
+CREATE
+## if existsIn(create table, "unlogged") and create table/unlogged
+ UNLOGGED
+## endif
+## if existsIn(create table, "temporary") and create table/temporary
+ TEMPORARY
+## endif
+ TABLE {{ create table/name }}
+## if existsIn(create table,"like")
+ LIKE {{ create table/like }};
+## else
+ (
+## for column in create table/columns
+{% include "table_column.inja" %}
+## if not loop/is_last
+,
+
+## endif
+
+## endfor
+
+);
+
+## endif
+

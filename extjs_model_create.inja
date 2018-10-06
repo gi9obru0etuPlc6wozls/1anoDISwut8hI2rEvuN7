@@ -1,0 +1,14 @@
+Ext.define('{{ uCamel(create table/name) }}', {
+    extend: 'Ext.data.Model',
+    fields: [
+## for column in create table/columns
+{% include "extjs_column.inja" %}
+## if not loop/is_last
+,
+
+## endif
+
+## endfor
+
+    ]
+}};
