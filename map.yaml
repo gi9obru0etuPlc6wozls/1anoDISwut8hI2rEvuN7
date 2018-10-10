@@ -6,3 +6,7 @@ db_type:
   boolean: int
 extjs_type:
   uuid: string
+qt_type:
+  uuid: QString
+  string: QString
+  timestamp: QDateTime

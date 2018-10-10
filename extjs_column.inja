@@ -1,4 +1,10 @@
         {
             name: '{{ lCamel(column/name) }}',
             type: '{{ map("extjs_type", column/type)  }}',
+## if existsIn(column, "reference") and column/reference
+
+            reference: {{ uCamel(regex_replace(column/name, "_id$", "")) }},
+            associatedKey: 'id'
+## endif
+
         }

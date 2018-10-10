@@ -131,8 +131,14 @@ int main() {
 
     std::string result1 = env.render_file("table_create.inja", schema);
     std::string result2 = env.render_file("extjs_model_create.inja", schema);
+    std::string result3 = env.render_file("tf_sqlobject.inja", schema);
+    std::string result4 = env.render_file("tf_model_h.inja", schema);
+    std::string result5 = env.render_file("tf_model_cpp.inja", schema);
     std::cout << "SQL:" << result1 << std::endl;
     std::cout << "ExtJS:" << result2 << std::endl;
+    std::cout << "tf_sqlobject:" << result3 << std::endl;
+    std::cout << "tf_model_h:" << result4 << std::endl;
+    std::cout << "tf_model_cpp:" << result5 << std::endl;
 
     return 0;
 }

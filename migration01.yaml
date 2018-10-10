@@ -20,6 +20,8 @@ create table:
     type: string
     precision: 12
     not_null: true
+  - name: lock_revision
+    type: int
   - name: customer_id
     type: uuid
     reference: true
