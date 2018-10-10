@@ -87,14 +87,24 @@ void {{ uCamel(create table/name) }}::set{{ uCamel(column/name) }}(const QString
     return {{ uCamel(create table/name) }}(mapper.findByPrimaryKey(id));
 }
 
-{{ uCamel(create table/name) }} {{ uCamel(create table/name) }}::get(const QString &id, int lockRevision)
+## for column1 in create table/columns
+## if existsIn(column1, "auto") and column1/auto
+## for column2 in create table/columns
+## if column2/name == "lock_revision"
+
+{{ uCamel(create table/name) }} {{ uCamel(create table/name) }}::get(const QString &{{ lCamel(column1/name) }}, int {{ lCamel(column2/name) }}) // --- Meep
 {
     TSqlORMapper<{{ uCamel(create table/name) }}Object> mapper;
     TCriteria cri;
-    cri.add({{ uCamel(create table/name) }}Object::Id, id);
-    cri.add({{ uCamel(create table/name) }}Object::LockRevision, lockRevision);
+    cri.add({{ uCamel(create table/name) }}Object::{{ uCamel(column1/name) }}, {{ lCamel(column1/name) }});
+    cri.add({{ uCamel(create table/name) }}Object::{{ uCamel(column2/name) }}, {{ lCamel(column2/name) }});
     return {{ uCamel(create table/name) }}(mapper.findFirst(cri));
 }
+
+## endif
+## endfor
+## endif
+## endfor
 
 int {{ uCamel(create table/name) }}::count()
 {
