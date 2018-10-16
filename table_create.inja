@@ -1,16 +1,16 @@
 CREATE
-## if existsIn(create table, "unlogged") and create table/unlogged
+## if exists("unlogged") and unlogged
  UNLOGGED
 ## endif
-## if existsIn(create table, "temporary") and create table/temporary
+## if exists("temporary") and temporary
  TEMPORARY
 ## endif
- TABLE {{ create table/name }}
-## if existsIn(create table,"like")
- LIKE {{ create table/like }};
+ TABLE {{ create table }}
+## if exists("like")
+ LIKE {{ like }};
 ## else
  (
-## for column in create table/columns
+## for column in columns
 {% include "table_column.inja" %}
 ## if not loop/is_last
 ,

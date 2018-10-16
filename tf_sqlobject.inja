@@ -1,5 +1,5 @@
-#ifndef {{ upper(uCamel(create table/name)) }}_H
-#define {{ upper(uCamel(create table/name)) }}_H
+#ifndef {{ upper(uCamel(create table)) }}_H
+#define {{ upper(uCamel(create table)) }}_H
 
 #include <TSqlObject>
 #include <QSharedData>
@@ -7,10 +7,10 @@
 
 
 
-class T_MODEL_EXPORT {{ uCamel(create table/name) }} : public TSqlObject, public QSharedData
+class T_MODEL_EXPORT {{ uCamel(create table) }} : public TSqlObject, public QSharedData
 {
 public:
-## for column in create table/columns
+## for column in columns
 
     {{ map("qt_type", column/type) }} {{ lCamel(column/name) }};
 ## endfor
@@ -20,7 +20,7 @@ public:
 
     enum PropertyIndex {
 
-## for column in create table/columns
+## for column in columns
         {{ uCamel(column/name) }}
 ## if  loop/is_first
  = 0
@@ -33,7 +33,7 @@ public:
 
     };
 
-## for column in create table/columns
+## for column in columns
 ## if existsIn(column, "auto") and column/auto
 
     int primaryKeyIndex() const override { return {{ uCamel(column/name) }}; }
@@ -41,16 +41,16 @@ public:
 ## endif
 ## endfor
 
-    QString tableName() const override { return QLatin1String("{{ create table/name }}"); }
+    QString tableName() const override { return QLatin1String("{{ create table }}"); }
 
 private:    /*** Don't modify below this line ***/
     Q_OBJECT
 
-## for column in create table/columns
+## for column in columns
     Q_PROPERTY({{ map("qt_type", column/type) }} {{ column/name }}  READ get{{ column/name }} WRITE set{{ column/name }})
     T_DEFINE_PROPERTY({{ map("qt_type", column/type) }}, {{ column/name }} )
 
 ## endfor
 };
 
-#endif // {{ upper(uCamel(create table/name)) }}_H
+#endif // {{ upper(uCamel(create table)) }}_H

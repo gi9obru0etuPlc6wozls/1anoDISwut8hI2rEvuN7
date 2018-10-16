@@ -1,27 +1,32 @@
 --- !<tag:framesquared.com,2015:migration>
-create table:
-  name: invoice
-  temporary: true
-  not exists: true
-  unlogged: true
-  xlike: billto
-  columns:
-  - name: id
-    type: uuid
-    auto: true
-  - name: first_name
-    type: string
-    precision: 255
-    not null: true
-  - name: last_name
-    type: string
-    precision: 512
-  - name: address
-    type: string
-    precision: 12
-    not_null: true
-  - name: lock_revision
-    type: int
-  - name: customer_id
-    type: uuid
-    reference: true
+migration:
+  direction: up
+  serial: 65535
+create table: invoice
+temporary: true
+not exists: true
+unlogged: true
+xlike: billto
+columns:
+- name: id
+  type: uuid
+  auto: true
+- name: first_name
+  type: string
+  precision: 255
+  not null: true
+- name: last_name
+  type: string
+  precision: 512
+- name: address
+  type: string
+  precision: 12
+  not_null: true
+- name: lock_revision
+  type: int
+- name: customer_id
+  type: uuid
+  reference: true
+- name: gender
+  type: string
+  values: ['Male', 'Female' ]
