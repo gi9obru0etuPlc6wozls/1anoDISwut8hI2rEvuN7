@@ -60,9 +60,13 @@ nlohmann::json YAMLtoJSON(const YAML::Node &node) {
             }
             break;
         case YAML::NodeType::Sequence: // ...
-            for (YAML::const_iterator n_it = node.begin(); n_it != node.end(); ++n_it) {
-                data[i] = YAMLtoJSON(*n_it);
-                ++i;
+            if (node.begin() == node.end()) {
+                data = json::array();
+            } else {
+                for (YAML::const_iterator n_it = node.begin(); n_it != node.end(); ++n_it) {
+                    data[i] = YAMLtoJSON(*n_it);
+                    ++i;
+                }
             }
             break;
         case YAML::NodeType::Map: // ...
